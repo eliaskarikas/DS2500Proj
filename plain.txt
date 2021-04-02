@@ -1,1 +1,5 @@
 NO WaIT... Prof. Strange is more awesome!
+
+Link to team's git repo:
+
+-> https://github.com/eliaskarikas/DS2500Proj.git
