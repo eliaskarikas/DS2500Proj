@@ -7,7 +7,7 @@ Created on Sat Apr 10 10:39:28 2021
 """
 
 # THIS IS ONLY THE GEOPANDAS CODE PART ! 
-# In order to run correctly copy paste into the datacleaning.py file 
+# In order to run correctly, merge with the datacleaning.py file 
 
 import pandas as pd
 import geopandas as gpd
@@ -29,6 +29,8 @@ world_covid = world_covid.drop(["Africa", "Asia", "Europe", "European Union",
 world_covid = world_covid.pivot_table("total_cases", "location", "date")  
 world_covid = world_covid.fillna(0) 
 
+# Total Cases Throughout the World on a Certain Date  
+print(world_covid["2021-03-26"].sum()) 
 
 # Cases Per Million People dataframe 
 world_per_milli = cases[["location", "date", "new_cases_per_million"]] 
@@ -36,8 +38,8 @@ world_per_milli = world_per_milli.pivot_table("new_cases_per_million", "location
 world_per_milli = world_per_milli.fillna(0)  
 # Transposition of dataframe with dates as rows
 world_per_milli = world_per_milli.T  
-world_per_milli.plot(y=["United States", "Brazil", "India", "France", "Russia"], use_index=True) 
-
+world_per_milli.plot(y=["Africa", "Asia", "Europe", "North America", 
+                        "South America", "Oceania"], use_index=True)  
 
 # Creating a dataframe with countries' shapes
 world_map = gpd.read_file("World_Countries_Generalized/World_Countries__Generalized_.shp") 
@@ -57,13 +59,6 @@ world_map.replace("Palestinian Territory", "Palestine", inplace = True)
 world_map.replace("Russian Federation", "Russia", inplace = True)
 world_map.replace("Timor-Leste", "Timor", inplace = True)
 world_map.replace("Vatican City", "Vatican", inplace = True) 
-
-# Checking for discrepancies in country names between dataframes
-# for index, row in new.iterrows():
-#     if index not in world_map["COUNTRY"].to_list(): 
-#         print(index + " is not in the list")  
-#     else:
-#         pass
 
 
 # Merging the data
@@ -91,24 +86,6 @@ for date in merged.columns.to_list()[4:]:
 
     
     img = WORLDPLOT.get_figure()
-    
-    f = io.BytesIO()
-    img.savefig(f, format = "png", bbox_inches = "tight")
-    f.seek(0)
-    img_frames.append(PIL.Image.open(f))
-    
-
-
-
-# create the gif 
-# img_frames[0].save("cases_per_million.gif", format = "GIF",
-#                     append_images = img_frames[1:],
-#                     save_all = True, duration = 200,
-#                     loop = 0)
-
-
-
-f.close() 
 
 
 
